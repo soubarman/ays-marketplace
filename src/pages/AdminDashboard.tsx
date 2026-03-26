@@ -23,31 +23,50 @@ const AdminDashboard = () => {
   if (!user) return null;
 
   return (
-    <div style={{ display: 'flex', minHeight: 'calc(100vh - 80px)' }}>
-      {/* Sidebar - SaaS Dark Mode */}
-      <aside style={{ width: '280px', backgroundColor: 'var(--color-primary)', borderRight: '1px solid var(--color-primary-light)', padding: '2.5rem 1.5rem', color: 'white' }}>
-        <div style={{ marginBottom: '3.5rem', paddingLeft: '0.75rem' }}>
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>System Admin</p>
-          <h3 style={{ fontSize: '1.5rem', color: 'white', marginTop: '0.25rem', fontWeight: 800 }}>Control Panel</h3>
-        </div>
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          <button
-            onClick={() => setActiveTab('overview')}
-            style={{ textAlign: 'left', padding: '1rem 1.25rem', borderRadius: 'var(--radius-md)', backgroundColor: activeTab === 'overview' ? 'rgba(255,255,255,0.15)' : 'transparent', color: 'white', fontWeight: activeTab === 'overview' ? 700 : 500, fontSize: '1.0625rem', transition: 'all var(--transition-fast)' }}
-          >
-            Platform Overview
-          </button>
-          <button
-            onClick={() => setActiveTab('providers')}
-            style={{ textAlign: 'left', padding: '1rem 1.25rem', borderRadius: 'var(--radius-md)', backgroundColor: activeTab === 'providers' ? 'rgba(255,255,255,0.15)' : 'transparent', color: 'white', fontWeight: activeTab === 'providers' ? 700 : 500, fontSize: '1.0625rem', transition: 'all var(--transition-fast)' }}
-          >
-            Manage Providers
-          </button>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 80px)' }}>
+      {/* Sidebar / Top Nav for Mobile */}
+      <aside className="lg-block" style={{ 
+        width: '100%', 
+        backgroundColor: 'var(--color-primary)', 
+        borderBottom: '1px solid var(--color-primary-light)',
+        padding: '1rem',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '0.5rem',
+        position: 'sticky',
+        top: '80px',
+        zIndex: 90,
+      }}>
+        <nav style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', padding: '0.25rem' }}>
+          {[
+            { id: 'overview', label: 'Platform Overview' },
+            { id: 'providers', label: 'Manage Providers' }
+          ].map((tab) => (
+            <button 
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              style={{ 
+                whiteSpace: 'nowrap',
+                padding: '0.75rem 1.25rem', 
+                borderRadius: 'var(--radius-full)', 
+                backgroundColor: activeTab === tab.id ? 'rgba(255,255,255,0.2)' : 'transparent',
+                color: 'white',
+                fontWeight: 600,
+                fontSize: '0.9375rem',
+                transition: 'all var(--transition-fast)',
+                border: '1px solid rgba(255,255,255,0.3)'
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
         </nav>
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '3rem', backgroundColor: 'var(--color-background)' }}>
+      <main style={{ flex: 1, padding: '2rem 1rem', backgroundColor: 'var(--color-background)' }}>
         {activeTab === 'overview' && (
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <div style={{ marginBottom: '3.5rem' }}>
@@ -126,46 +145,47 @@ const AdminDashboard = () => {
               <p className="text-muted text-lg mt-1">Verify, suspend, or manage network experts.</p>
             </div>
 
-            <Card style={{ padding: 0, overflow: 'hidden', border: '1px solid var(--color-border)' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                <thead style={{ backgroundColor: 'var(--color-background)' }}>
-                  <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
-                    <th style={{ padding: '1.5rem 2.5rem', fontWeight: 700, color: 'var(--color-text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Name</th>
-                    <th style={{ padding: '1.5rem 2.5rem', fontWeight: 700, color: 'var(--color-text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Service Area</th>
-                    <th style={{ padding: '1.5rem 2.5rem', fontWeight: 700, color: 'var(--color-text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Jobs Done</th>
-                    <th style={{ padding: '1.5rem 2.5rem', fontWeight: 700, color: 'var(--color-text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
-                    <th style={{ padding: '1.5rem 2.5rem', fontWeight: 700, color: 'var(--color-text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'right' }}>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {providers.map((p, idx) => (
-                    <tr key={p.id} className="card-hover" style={{ borderBottom: idx === providers.length - 1 ? 'none' : '1px solid var(--color-border)' }}>
-                      <td style={{ padding: '1.5rem 2.5rem', fontWeight: 700, fontSize: '1.125rem' }}>{p.name}</td>
-                      <td style={{ padding: '1.5rem 2.5rem', fontSize: '1rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>{p.district.replace('_', ' ').toUpperCase()}</td>
-                      <td style={{ padding: '1.5rem 2.5rem', fontSize: '1.125rem', fontWeight: 600 }}>{p.jobsCompleted}</td>
-                      <td style={{ padding: '1.5rem 2.5rem' }}>
-                        <span style={{ backgroundColor: '#D1FAE5', color: '#065F46', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.05em' }}>VERIFIED</span>
+            <Card style={{ padding: 0, overflowX: 'auto', border: '1px solid var(--color-border)' }}>
+              <div style={{ minWidth: '800px' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                  <thead style={{ backgroundColor: 'var(--color-background)' }}>
+                    <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
+                      <th style={{ padding: '1.5rem 2rem', fontWeight: 700, color: 'var(--color-text-muted)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Name</th>
+                      <th style={{ padding: '1.5rem 2rem', fontWeight: 700, color: 'var(--color-text-muted)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Service Area</th>
+                      <th style={{ padding: '1.5rem 2rem', fontWeight: 700, color: 'var(--color-text-muted)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Jobs</th>
+                      <th style={{ padding: '1.5rem 2rem', fontWeight: 700, color: 'var(--color-text-muted)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</th>
+                      <th style={{ padding: '1.5rem 2rem', fontWeight: 700, color: 'var(--color-text-muted)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'right' }}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {providers.map((p, idx) => (
+                      <tr key={p.id} className="card-hover" style={{ borderBottom: idx === providers.length - 1 ? 'none' : '1px solid var(--color-border)' }}>
+                        <td style={{ padding: '1.5rem 2rem', fontWeight: 700, fontSize: '1rem' }}>{p.name}</td>
+                        <td style={{ padding: '1.5rem 2rem', fontSize: '0.9375rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>{p.district.replace('_', ' ').toUpperCase()}</td>
+                        <td style={{ padding: '1.5rem 2rem', fontSize: '1rem', fontWeight: 600 }}>{p.jobsCompleted}</td>
+                        <td style={{ padding: '1.5rem 2rem' }}>
+                          <span style={{ backgroundColor: '#D1FAE5', color: '#065F46', padding: '0.4rem 0.8rem', borderRadius: 'var(--radius-full)', fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.05em' }}>VERIFIED</span>
+                        </td>
+                        <td style={{ padding: '1.5rem 2rem', textAlign: 'right' }}>
+                          <Button variant="ghost" size="sm" style={{ color: 'var(--color-error)' }}>Suspend</Button>
+                        </td>
+                      </tr>
+                    ))}
+                    <tr style={{ borderTop: '1px solid var(--color-border)', backgroundColor: '#F8FAFC' }}>
+                      <td style={{ padding: '1.5rem 2rem', fontWeight: 700, fontSize: '1rem' }}>Rakesh Singh</td>
+                      <td style={{ padding: '1.5rem 2rem', fontSize: '0.9375rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>SONITPUR</td>
+                      <td style={{ padding: '1.5rem 2rem', fontSize: '1rem', fontWeight: 600 }}>0</td>
+                      <td style={{ padding: '1.5rem 2rem' }}>
+                        <span style={{ backgroundColor: '#FEF3C7', color: '#92400E', padding: '0.4rem 0.8rem', borderRadius: 'var(--radius-full)', fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.05em' }}>PENDING</span>
                       </td>
-                      <td style={{ padding: '1.5rem 2.5rem', textAlign: 'right' }}>
-                        <Button variant="ghost" size="sm" style={{ color: 'var(--color-error)' }}>Suspend</Button>
+                      <td style={{ padding: '1.5rem 2rem', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                        <Button variant="outline" size="sm" style={{ color: 'var(--color-success)', borderColor: 'var(--color-success)', height: '32px' }}><CheckCircle size={14} style={{ marginRight: '0.25rem' }} /> Approve</Button>
+                        <Button variant="outline" size="sm" style={{ color: 'var(--color-error)', borderColor: 'var(--color-error)', height: '32px' }}><XCircle size={14} style={{ marginRight: '0.25rem' }} /> Reject</Button>
                       </td>
                     </tr>
-                  ))}
-                  {/* Mock a pending provider */}
-                  <tr style={{ borderTop: '1px solid var(--color-border)', backgroundColor: '#F8FAFC' }}>
-                    <td style={{ padding: '1.5rem 2.5rem', fontWeight: 700, fontSize: '1.125rem' }}>Rakesh Singh</td>
-                    <td style={{ padding: '1.5rem 2.5rem', fontSize: '1rem', color: 'var(--color-text-muted)', fontWeight: 500 }}>SONITPUR</td>
-                    <td style={{ padding: '1.5rem 2.5rem', fontSize: '1.125rem', fontWeight: 600 }}>0</td>
-                    <td style={{ padding: '1.5rem 2.5rem' }}>
-                      <span style={{ backgroundColor: '#FEF3C7', color: '#92400E', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.05em' }}>PENDING</span>
-                    </td>
-                    <td style={{ padding: '1.5rem 2.5rem', display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
-                      <Button variant="outline" size="sm" style={{ color: 'var(--color-success)', borderColor: 'var(--color-success)' }}><CheckCircle size={16} style={{ marginRight: '0.25rem' }} /> Approve</Button>
-                      <Button variant="outline" size="sm" style={{ color: 'var(--color-error)', borderColor: 'var(--color-error)' }}><XCircle size={16} style={{ marginRight: '0.25rem' }} /> Reject</Button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
             </Card>
           </div>
         )}

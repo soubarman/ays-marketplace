@@ -81,61 +81,54 @@ const CustomerDashboard = () => {
   if (!user) return null;
 
   return (
-    <div style={{ display: 'flex', minHeight: 'calc(100vh - 80px)' }}>
-      {/* Sidebar - Premium Minimalist */}
-      <aside style={{ width: '280px', backgroundColor: 'var(--color-surface)', borderRight: '1px solid var(--color-border)', padding: '2.5rem 1.5rem' }}>
-        <div style={{ marginBottom: '3rem', paddingLeft: '0.75rem' }}>
-           <p className="text-muted text-sm font-medium" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>Dashboard</p>
-           <h3 style={{ fontSize: '1.5rem', color: 'var(--color-primary)', marginTop: '0.25rem' }}>{user.name}</h3>
-        </div>
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <button 
-            onClick={() => setActiveTab('search')}
-            style={{ 
-              textAlign: 'left', 
-              padding: '1rem 1.25rem', 
-              borderRadius: 'var(--radius-md)', 
-              backgroundColor: activeTab === 'search' ? 'var(--color-primary)' : 'transparent',
-              color: activeTab === 'search' ? 'white' : 'var(--color-text-muted)',
-              fontWeight: activeTab === 'search' ? 600 : 500,
-              transition: 'all var(--transition-fast)'
-            }}
-          >
-            Find Services
-          </button>
-          <button 
-            onClick={() => setActiveTab('bookings')}
-            style={{ 
-              textAlign: 'left', 
-              padding: '1rem 1.25rem', 
-              borderRadius: 'var(--radius-md)', 
-              backgroundColor: activeTab === 'bookings' ? 'var(--color-primary)' : 'transparent',
-              color: activeTab === 'bookings' ? 'white' : 'var(--color-text-muted)',
-              fontWeight: activeTab === 'bookings' ? 600 : 500,
-              transition: 'all var(--transition-fast)'
-            }}
-          >
-            My Bookings
-          </button>
-          <button 
-            onClick={() => setActiveTab('profile')}
-            style={{ 
-              textAlign: 'left', 
-              padding: '1rem 1.25rem', 
-              borderRadius: 'var(--radius-md)', 
-              backgroundColor: activeTab === 'profile' ? 'var(--color-primary)' : 'transparent',
-              color: activeTab === 'profile' ? 'white' : 'var(--color-text-muted)',
-              fontWeight: activeTab === 'profile' ? 600 : 500,
-              transition: 'all var(--transition-fast)'
-            }}
-          >
-            Profile Settings
-          </button>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 80px)' }}>
+      {/* Sidebar / Top Nav for Mobile */}
+      <aside className="lg-block" style={{ 
+        width: '100%', 
+        maxWidth: activeTab !== 'search' ? '100%' : '1400px',
+        margin: '0 auto',
+        backgroundColor: 'var(--color-surface)', 
+        borderBottom: '1px solid var(--color-border)',
+        padding: '1rem',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '0.5rem',
+        position: 'sticky',
+        top: '80px',
+        zIndex: 90,
+      }}>
+        <nav style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', padding: '0.25rem' }}>
+          {[
+            { id: 'search', label: 'Find Services' },
+            { id: 'bookings', label: 'My Bookings' },
+            { id: 'profile', label: 'Profile' }
+          ].map((tab) => (
+            <button 
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              style={{ 
+                whiteSpace: 'nowrap',
+                padding: '0.75rem 1.25rem', 
+                borderRadius: 'var(--radius-full)', 
+                backgroundColor: activeTab === tab.id ? 'var(--color-primary)' : 'var(--color-background)',
+                color: activeTab === tab.id ? 'white' : 'var(--color-text-muted)',
+                fontWeight: 600,
+                fontSize: '0.9375rem',
+                transition: 'all var(--transition-fast)',
+                border: activeTab === tab.id ? '1px solid var(--color-primary)' : '1px solid var(--color-border)'
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
         </nav>
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '3rem', backgroundColor: 'var(--color-background)' }}>
+      <main style={{ flex: 1, padding: '2rem 1rem', backgroundColor: 'var(--color-background)' }}>
+        <div className="container" style={{ maxWidth: '1200px', padding: 0 }}>
         {activeTab === 'search' && (
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <div style={{ marginBottom: '2.5rem' }}>
@@ -143,26 +136,28 @@ const CustomerDashboard = () => {
               <p className="text-muted text-lg mt-1">Book trusted experts across Assam.</p>
             </div>
             
-            <Card style={{ flexDirection: 'row', alignItems: 'flex-end', gap: '1.5rem', marginBottom: '3rem', padding: '2rem', boxShadow: 'var(--shadow-md)', border: 'none' }}>
-              <div style={{ flex: 1 }}>
-                <Select 
-                  label="Service Required" 
-                  options={services.map(s => ({ label: s.name, value: s.id }))} 
-                  value={searchService}
-                  onChange={(e) => setSearchService(e.target.value)}
-                />
+            <Card style={{ marginBottom: '3rem', padding: '1.5rem', boxShadow: 'var(--shadow-md)', border: 'none' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} className="lg-flex lg-flex-row">
+                <div style={{ flex: 1 }}>
+                  <Select 
+                    label="Service Required" 
+                    options={services.map(s => ({ label: s.name, value: s.id }))} 
+                    value={searchService}
+                    onChange={(e) => setSearchService(e.target.value)}
+                  />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <Select 
+                    label="Location (District)" 
+                    options={assamDistricts} 
+                    value={searchDistrict}
+                    onChange={(e) => setSearchDistrict(e.target.value)}
+                  />
+                </div>
+                <Button size="lg" style={{ height: '48px', marginTop: 'auto' }} fullWidth className="lg-w-auto">
+                  <Search size={20} style={{ marginRight: '0.75rem' }} /> Search
+                </Button>
               </div>
-              <div style={{ flex: 1 }}>
-                <Select 
-                  label="Location (District)" 
-                  options={assamDistricts} 
-                  value={searchDistrict}
-                  onChange={(e) => setSearchDistrict(e.target.value)}
-                />
-              </div>
-              <Button size="lg" style={{ height: '52px' }}>
-                <Search size={20} style={{ marginRight: '0.75rem' }} /> Search
-              </Button>
             </Card>
 
             <h3 className="mb-6 text-xl font-bold" style={{ color: 'var(--color-text-main)' }}>Available Experts ({filteredProviders.length})</h3>
@@ -225,37 +220,39 @@ const CustomerDashboard = () => {
                     rejected: { bg: 'var(--color-error-bg)', text: 'var(--color-error)' },
                     cancelled: { bg: 'var(--color-error-bg)', text: 'var(--color-error)' }
                   };
-                  const colorConfig = statusColors[b.status];
+                  const colorConfig = statusColors[b.status as keyof typeof statusColors];
 
                   return (
-                    <Card key={b.id} className="card-hover" style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '2.5rem', border: '1px solid var(--color-border)' }}>
-                      <div>
-                        <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.375rem', color: 'var(--color-primary)' }}>{getServiceName(b.service)}</h4>
-                        <div className="text-muted" style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '1.125rem' }}>
-                          <span style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>{getProviderName(b.providerId)}</span>
-                          <span style={{ color: 'var(--color-border-hover)' }}>|</span>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Calendar size={18} /> {b.date}</span>
-                          <span style={{ color: 'var(--color-border-hover)' }}>|</span>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Clock size={18} /> {b.time}</span>
-                        </div>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '3rem' }}>
-                        <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.375rem', fontWeight: 500 }}>STATUS</div>
-                          <div style={{ 
-                            fontWeight: 800, 
-                            textTransform: 'uppercase',
-                            fontSize: '0.75rem',
-                            letterSpacing: '0.05em',
-                            padding: '0.375rem 1rem',
-                            borderRadius: 'var(--radius-full)',
-                            backgroundColor: colorConfig.bg,
-                            color: colorConfig.text
-                          }}>
-                            {b.status}
+                    <Card key={b.id} className="card-hover" style={{ padding: '1.5rem', border: '1px solid var(--color-border)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} className="lg-flex lg-flex-row lg-items-center lg-justify-between">
+                        <div>
+                          <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem', color: 'var(--color-primary)' }}>{getServiceName(b.service)}</h4>
+                          <div className="text-muted" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.5rem', fontSize: '1rem' }}>
+                            <span style={{ fontWeight: 600, color: 'var(--color-text-main)' }}>{getProviderName(b.providerId)}</span>
+                            <span className="hidden lg-block" style={{ color: 'var(--color-border-hover)' }}>|</span>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Calendar size={16} /> {b.date}</span>
+                            <span className="hidden lg-block" style={{ color: 'var(--color-border-hover)' }}>|</span>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Clock size={16} /> {b.time}</span>
                           </div>
                         </div>
-                        <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--color-primary)' }}>₹{b.price}</div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2rem', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }} className="lg-border-none lg-pt-0">
+                          <div style={{ textAlign: 'left' }} className="lg-text-right">
+                            <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem', fontWeight: 600 }}>STATUS</div>
+                            <div style={{ 
+                              fontWeight: 800, 
+                              textTransform: 'uppercase',
+                              fontSize: '0.7rem',
+                              letterSpacing: '0.05em',
+                              padding: '0.25rem 0.75rem',
+                              borderRadius: 'var(--radius-full)',
+                              backgroundColor: colorConfig.bg,
+                              color: colorConfig.text
+                            }}>
+                              {b.status}
+                            </div>
+                          </div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>₹{b.price}</div>
+                        </div>
                       </div>
                     </Card>
                   );
@@ -277,6 +274,7 @@ const CustomerDashboard = () => {
             </Card>
           </div>
         )}
+        </div>
       </main>
 
       {/* Booking Modal */}

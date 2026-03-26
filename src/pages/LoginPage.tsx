@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth, type UserRole } from '../context/AuthContext';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -57,13 +57,16 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="bg-gradient-mesh" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 80px)', padding: '4rem 1rem' }}>
-      <div className="card glass" style={{ width: '100%', maxWidth: '520px', padding: '3.5rem 3rem', boxShadow: 'var(--shadow-xl)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 'var(--radius-xl)' }}>
+    <div className="bg-gradient-mesh" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 80px)', padding: '2rem 1rem' }}>
+      <Link to="/" className="hover-accent lg-ml-8" style={{ alignSelf: 'flex-start', marginBottom: '1.5rem', color: 'var(--color-text-muted)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9375rem' }}>
+        ← Back to Home
+      </Link>
+      <div className="card glass lg-p-12" style={{ width: '100%', maxWidth: '480px', padding: '2rem 1.5rem', boxShadow: 'var(--shadow-xl)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 'var(--radius-xl)' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <div style={{ display: 'inline-block', padding: '0.5rem 1.25rem', backgroundColor: 'var(--color-primary)', color: 'white', borderRadius: 'var(--radius-full)', fontWeight: 600, fontSize: '0.875rem', marginBottom: '1.5rem', letterSpacing: '0.05em' }}>
             AYS PORTAL
           </div>
-          <h2 style={{ fontSize: '2.25rem', letterSpacing: '-0.02em', color: 'var(--color-primary)', marginBottom: '0.5rem', fontWeight: 800 }}>
+          <h2 style={{ fontSize: '1.75rem', letterSpacing: '-0.02em', color: 'var(--color-primary)', marginBottom: '0.5rem', fontWeight: 800 }} className="lg-text-3xl">
             {isLogin ? 'Welcome Back' : 'Create an Account'}
           </h2>
           <p className="text-muted text-lg">
@@ -181,7 +184,7 @@ const LoginPage = () => {
             required 
           />
 
-          <Button type="submit" size="xl" fullWidth style={{ marginTop: '1rem' }}>
+          <Button type="submit" size="lg" fullWidth className="lg-size-xl" style={{ marginTop: '1rem' }}>
             {isLogin ? 'Sign In Securely' : 'Create Account'}
           </Button>
         </form>

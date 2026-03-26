@@ -35,9 +35,9 @@ const LandingPage = () => {
   return (
     <div style={{ paddingBottom: '0' }}>
       {/* Premium Hero Section */}
-      <section className="bg-gradient-mesh" style={{ 
+      <section className="bg-gradient-mesh lg-pt-32 lg-pb-40" style={{ 
         position: 'relative', 
-        padding: '8rem 2rem 10rem 2rem', 
+        padding: '6rem 1rem 8rem 1rem', 
         textAlign: 'center',
         overflow: 'hidden'
       }}>
@@ -57,14 +57,13 @@ const LandingPage = () => {
 
       {/* Floating Search Card */}
       <div className="container" style={{ marginTop: '-5rem', position: 'relative', zIndex: 10, paddingBottom: '5rem' }}>
-        <div className="card glass" style={{ 
+        <div className="card glass lg-grid lg-grid-cols-3 lg-p-10 lg-items-end" style={{ 
             maxWidth: '900px', 
             margin: '0 auto', 
-            padding: '2.5rem',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: '1.5rem',
-            alignItems: 'end',
+            padding: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1.25rem',
             boxShadow: 'var(--shadow-xl)'
           }}>
           <div>
@@ -91,12 +90,12 @@ const LandingPage = () => {
 
       {/* Popular Services */}
       <section className="container mb-8" style={{ paddingBottom: '4rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem' }} className="lg-flex-row lg-items-end lg-justify-between">
            <div>
-             <h2 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Popular Services</h2>
+             <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }} className="lg-text-4xl">Popular Services</h2>
              <p className="text-muted text-lg">Top-rated professional services near you.</p>
            </div>
-           <Button variant="ghost">View All Services &rarr;</Button>
+           <Button variant="ghost" style={{ alignSelf: 'flex-start' }}>View All Services &rarr;</Button>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '2rem' }}>
           {services.map(s => {
@@ -142,9 +141,9 @@ const LandingPage = () => {
 
       {/* Why Choose AYS / Premium Form */}
       <section className="container" style={{ padding: '8rem 0' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '6rem', alignItems: 'center' }}>
+        <div className="lg-grid lg-grid-cols-2 lg-gap-24 lg-items-center" style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
           <div>
-            <h2 style={{ fontSize: '3.5rem', marginBottom: '2rem', lineHeight: 1.1 }}>The modern way to maintain your home.</h2>
+            <h2 style={{ fontSize: '2.25rem', marginBottom: '2rem', lineHeight: 1.1 }} className="lg-text-6xl">The modern way to maintain your home.</h2>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '2rem', marginTop: '3rem' }}>
               <li style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem' }}>
                 <div style={{ padding: '0.5rem', backgroundColor: 'var(--color-success-bg)', borderRadius: 'var(--radius-full)', color: 'var(--color-success)' }}>
@@ -175,10 +174,10 @@ const LandingPage = () => {
               </li>
             </ul>
           </div>
-          <div className="card" style={{ padding: '4rem', backgroundColor: 'var(--color-surface)', boxShadow: 'var(--shadow-xl)', border: 'none' }}>
-             <h3 style={{ marginBottom: '1rem', fontSize: '2rem' }}>Join as a Professional</h3>
+          <div className="card lg-p-16" style={{ padding: '2rem', backgroundColor: 'var(--color-surface)', boxShadow: 'var(--shadow-xl)', border: 'none' }}>
+             <h3 style={{ marginBottom: '1rem', fontSize: '1.75rem' }} className="lg-text-3xl">Join as a Professional</h3>
              <p className="text-muted mb-8 text-lg">Are you a skilled professional looking to grow your business? Join the fastest growing network in Assam and earn on your schedule.</p>
-             <Button size="xl" fullWidth onClick={() => navigate('/register')}>Apply as a Provider</Button>
+             <Button size="lg" fullWidth onClick={() => navigate('/register')} className="lg-size-xl">Apply as a Provider</Button>
              <p className="text-center text-sm text-muted" style={{ marginTop: '1.5rem' }}>Over 1,000+ experts registered already.</p>
           </div>
         </div>
@@ -226,14 +225,14 @@ const LandingPage = () => {
       {/* Footer CTA */}
       <footer style={{ backgroundColor: 'var(--color-primary)', color: 'white', padding: '8rem 2rem 4rem 2rem', textAlign: 'center', marginTop: 'auto' }}>
         <div className="container">
-          <h2 style={{ color: 'white', marginBottom: '2.5rem', fontSize: '3.5rem', letterSpacing: '-0.02em', fontWeight: 800 }}>Ready to Get Started?</h2>
-          <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-             <Button variant="white" size="xl" onClick={() => navigate('/customer/search')} style={{ padding: '1rem 3rem' }}>Book a Service</Button>
-             <Button variant="ghost" size="xl" onClick={() => navigate('/register')} style={{ color: 'white', border: '1px solid rgba(255,255,255,0.2)', padding: '1rem 3rem' }}>Register as Provider</Button>
+          <h2 className="lg-text-6xl" style={{ color: 'white', marginBottom: '2.5rem', fontSize: '2.5rem', letterSpacing: '-0.02em', fontWeight: 800 }}>Ready to Get Started?</h2>
+          <div className="lg-flex-row lg-justify-center" style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
+             <Button variant="white" size="lg" onClick={() => navigate('/customer/search')} className="lg-size-xl lg-px-12" style={{ padding: '1rem 2rem' }}>Book a Service</Button>
+             <Button variant="ghost" size="lg" onClick={() => navigate('/register')} className="lg-size-xl lg-px-12" style={{ color: 'white', border: '1px solid rgba(255,255,255,0.2)', padding: '1rem 2rem' }}>Register as Provider</Button>
           </div>
-          <div style={{ marginTop: '8rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)', fontSize: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="lg-flex-row lg-justify-between lg-mt-32" style={{ marginTop: '6rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)', fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
             <span>&copy; 2026 At Your Service (AYS) Assam. All rights reserved.</span>
-            <span style={{ fontWeight: 600, color: 'rgba(255,255,255,0.8)' }}>AYS.</span>
+            <span style={{ fontWeight: 600, color: 'rgba(255,255,255,0.8)', fontSize: '1.125rem' }}>AYS.</span>
           </div>
         </div>
       </footer>

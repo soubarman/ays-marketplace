@@ -35,37 +35,51 @@ const ProviderDashboard = () => {
   if (!user) return null;
 
   return (
-    <div style={{ display: 'flex', minHeight: 'calc(100vh - 80px)' }}>
-      {/* Sidebar - Premium Minimalist */}
-      <aside style={{ width: '280px', backgroundColor: 'var(--color-surface)', borderRight: '1px solid var(--color-border)', padding: '2.5rem 1.5rem' }}>
-        <div style={{ marginBottom: '3rem', paddingLeft: '0.75rem' }}>
-           <p className="text-muted text-sm font-medium" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>Provider Portal</p>
-           <h3 style={{ fontSize: '1.5rem', color: 'var(--color-primary)', marginTop: '0.25rem', fontWeight: 800 }}>{user.name}</h3>
-        </div>
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          <button 
-            onClick={() => setActiveTab('requests')}
-            style={{ textAlign: 'left', padding: '1rem 1.25rem', borderRadius: 'var(--radius-md)', backgroundColor: activeTab === 'requests' ? 'var(--color-primary)' : 'transparent', color: activeTab === 'requests' ? 'white' : 'var(--color-text-muted)', fontWeight: activeTab === 'requests' ? 600 : 500, transition: 'all var(--transition-fast)' }}
-          >
-            Job Requests
-          </button>
-          <button 
-            onClick={() => setActiveTab('earnings')}
-            style={{ textAlign: 'left', padding: '1rem 1.25rem', borderRadius: 'var(--radius-md)', backgroundColor: activeTab === 'earnings' ? 'var(--color-primary)' : 'transparent', color: activeTab === 'earnings' ? 'white' : 'var(--color-text-muted)', fontWeight: activeTab === 'earnings' ? 600 : 500, transition: 'all var(--transition-fast)' }}
-          >
-            Earnings & Stats
-          </button>
-          <button 
-            onClick={() => setActiveTab('profile')}
-            style={{ textAlign: 'left', padding: '1rem 1.25rem', borderRadius: 'var(--radius-md)', backgroundColor: activeTab === 'profile' ? 'var(--color-primary)' : 'transparent', color: activeTab === 'profile' ? 'white' : 'var(--color-text-muted)', fontWeight: activeTab === 'profile' ? 600 : 500, transition: 'all var(--transition-fast)' }}
-          >
-            Profile Settings
-          </button>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 80px)' }}>
+      {/* Sidebar / Top Nav for Mobile */}
+      <aside className="lg-block" style={{ 
+        width: '100%', 
+        backgroundColor: 'var(--color-surface)', 
+        borderBottom: '1px solid var(--color-border)',
+        padding: '1rem',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '0.5rem',
+        position: 'sticky',
+        top: '80px',
+        zIndex: 90,
+      }}>
+        <nav style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', padding: '0.25rem' }}>
+          {[
+            { id: 'requests', label: 'Job Requests' },
+            { id: 'earnings', label: 'Earnings' },
+            { id: 'profile', label: 'Profile' }
+          ].map((tab) => (
+            <button 
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              style={{ 
+                whiteSpace: 'nowrap',
+                padding: '0.75rem 1.25rem', 
+                borderRadius: 'var(--radius-full)', 
+                backgroundColor: activeTab === tab.id ? 'var(--color-primary)' : 'var(--color-background)',
+                color: activeTab === tab.id ? 'white' : 'var(--color-text-muted)',
+                fontWeight: 600,
+                fontSize: '0.9375rem',
+                transition: 'all var(--transition-fast)',
+                border: activeTab === tab.id ? '1px solid var(--color-primary)' : '1px solid var(--color-border)'
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
         </nav>
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '3rem', backgroundColor: 'var(--color-background)' }}>
+      <main style={{ flex: 1, padding: '2rem 1rem', backgroundColor: 'var(--color-background)' }}>
         {activeTab === 'requests' && (
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <div style={{ marginBottom: '3rem' }}>
@@ -84,27 +98,27 @@ const ProviderDashboard = () => {
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                     {incomingRequests.map(req => (
-                      <Card key={req.id} style={{ padding: '2.5rem', border: '1px solid var(--color-border)' }} className="card-hover">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <Card key={req.id} style={{ padding: '1.5rem', border: '1px solid var(--color-border)' }} className="card-hover">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} className="lg-flex lg-flex-row lg-items-start lg-justify-between">
                           <div>
-                            <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem', color: 'var(--color-primary)' }}>{getServiceName(req.service)} Lead</h4>
-                            <div style={{ color: 'var(--color-text-main)', marginBottom: '1rem', fontSize: '1.125rem' }}>
+                            <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.375rem', color: 'var(--color-primary)' }}>{getServiceName(req.service)} Lead</h4>
+                            <div style={{ color: 'var(--color-text-main)', marginBottom: '1rem', fontSize: '1rem' }}>
                               <span style={{ fontWeight: 600 }}>Customer:</span> {typeof req.customerId === 'object' ? req.customerId?.name : 'Unknown User'}
                               {typeof req.customerId === 'object' && req.customerId?.phone && (
                                 <span style={{ color: 'var(--color-text-muted)' }}> | {req.customerId.phone}</span>
                               )}
                             </div>
-                            <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--color-text-muted)', fontSize: '1.125rem', marginBottom: '1.5rem' }}>
-                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Calendar size={18} /> {req.date}</span>
-                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Clock size={18} /> {req.time}</span>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', color: 'var(--color-text-muted)', fontSize: '1rem', marginBottom: '1.5rem' }}>
+                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Calendar size={16} /> {req.date}</span>
+                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Clock size={16} /> {req.time}</span>
                             </div>
                             <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--color-primary)', letterSpacing: '-0.02em' }}>₹{req.price}</div>
                           </div>
-                          <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', alignItems: 'flex-end' }}>
-                            <Button size="lg" onClick={() => handleStatusChange(req.id as string, 'accepted')} style={{ backgroundColor: 'var(--color-success)', boxShadow: '0 4px 14px 0 rgba(16, 185, 129, 0.3)', minWidth: '160px' }}>
-                              <CheckCircle size={18} style={{ marginRight: '0.375rem' }} /> Accept Lead
+                          <div style={{ display: 'flex', gap: '0.75rem', flexDirection: 'row' }} className="lg-flex-col lg-items-end">
+                            <Button size="lg" onClick={() => handleStatusChange(req.id as string, 'accepted')} style={{ backgroundColor: 'var(--color-success)', boxShadow: '0 4px 14px 0 rgba(16, 185, 129, 0.3)', flex: 1 }}>
+                              <CheckCircle size={18} style={{ marginRight: '0.375rem' }} /> Accept
                             </Button>
-                            <Button variant="outline" size="sm" onClick={() => handleStatusChange(req.id as string, 'rejected')} style={{ color: 'var(--color-error)', minWidth: '160px', borderColor: 'transparent', backgroundColor: 'var(--color-error-bg)' }}>
+                            <Button variant="outline" size="sm" onClick={() => handleStatusChange(req.id as string, 'rejected')} style={{ color: 'var(--color-error)', flex: 1, borderColor: 'transparent', backgroundColor: 'var(--color-error-bg)' }}>
                               <XCircle size={18} style={{ marginRight: '0.375rem' }} /> Decline
                             </Button>
                           </div>
@@ -122,22 +136,22 @@ const ProviderDashboard = () => {
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                     {activeJobs.map(job => (
-                      <Card key={job.id} style={{ borderLeft: '6px solid var(--color-accent)', padding: '2.5rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Card key={job.id} style={{ borderLeft: '6px solid var(--color-accent)', padding: '1.5rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} className="lg-flex lg-flex-row lg-items-center lg-justify-between">
                           <div>
-                            <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.375rem' }}>{getServiceName(job.service)}</h4>
-                            <div style={{ color: 'var(--color-text-main)', marginBottom: '0.75rem', fontSize: '1.125rem' }}>
+                            <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.25rem' }}>{getServiceName(job.service)}</h4>
+                            <div style={{ color: 'var(--color-text-main)', marginBottom: '0.75rem', fontSize: '1rem' }}>
                               <span style={{ fontWeight: 600 }}>Customer:</span> {typeof job.customerId === 'object' ? job.customerId?.name : 'Unknown User'}
                               {typeof job.customerId === 'object' && job.customerId?.phone && (
                                 <span style={{ color: 'var(--color-text-muted)' }}> | {job.customerId.phone}</span>
                               )}
                             </div>
-                            <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--color-text-muted)', fontSize: '1.125rem' }}>
-                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Calendar size={18} /> {job.date}</span>
-                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Clock size={18} /> {job.time}</span>
+                            <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--color-text-muted)', fontSize: '1rem' }}>
+                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Calendar size={16} /> {job.date}</span>
+                              <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Clock size={16} /> {job.time}</span>
                             </div>
                           </div>
-                          <Button size="lg" onClick={() => handleStatusChange(job.id as string, 'completed')}>Mark Completed</Button>
+                          <Button size="lg" fullWidth className="lg-w-auto" onClick={() => handleStatusChange(job.id as string, 'completed')}>Mark Completed</Button>
                         </div>
                       </Card>
                     ))}
